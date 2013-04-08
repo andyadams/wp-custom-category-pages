@@ -27,24 +27,36 @@ License: GPL2
 
 require_once( dirname( __FILE__ ) . '/vendor/Tax-Meta-Class/Tax-meta-class/Tax-meta-class.php' );
 
-function ccp_admin_init() {
+function ccp_plugin_admin_init() {
 	if ( is_admin() ) {
 		$config = array(
-			'id' => 'ccp_category_meta',          // meta box id, unique per meta box
-			'title' => 'Custom Category Meta',          // meta box title
-			'pages' => array( 'category' ),        // taxonomy name, accept categories, post_tag and custom taxonomies
-			'context' => 'normal',            // where the meta box appear: normal (default), advanced, side; optional
-			'fields' => array(),            // list of meta fields (can be added by field arrays)
-			'local_images' => true,          // Use local or hosted images (meta box images for add/remove)
-			'use_with_theme' => false          //change path if used with theme set to true, false for a plugin or anything else for a custom path(default false).
+			'id' => 'ccp_plugin_category_meta',
+			'title' => 'Custom Category Meta',
+			'pages' => array( 'category' ),
+			'context' => 'normal',
+			'fields' => array(),
+			'local_images' => true,
+			'use_with_theme' => false
 		);
 
 		$my_meta =  new Tax_Meta_Class( $config );
 
-		$my_meta->addWysiwyg('text_field_id',array('name'=> __('My Text ','tax-meta')));
+		$my_meta->addText( 'headline', array( 'name' => __( 'Category Headline', 'ccp_plugin' ) ) );
+		$my_meta->addText( 'page_title', array( 'name' => __( 'Category Page Title', 'ccp_plugin' ) ) );
+		$my_meta->addWysiwyg( 'copy', array( 'name' => __( 'Category Copy', 'ccp_plugin' ) ) );
 
 		$my_meta->Finish();
 	}
 }
 
-add_action( 'init', 'ccp_admin_init' );
+add_action( 'init', 'ccp_plugin_admin_init' );
+
+function ccp_plugin_add_fields_header() {
+	?>
+	<tr class="form-field">
+		<th scope="row" valign="top"><h3><?php _e( 'Custom Category Pages', 'ccp_plugin' ); ?></h3></th>
+	</tr>
+	<?php
+}
+
+add_action( 'category_edit_form_fields', 'ccp_plugin_add_fields_header' );
