@@ -78,7 +78,7 @@ add_filter( 'plugins_url', 'ccp_plugin_filter_plugins_url', 10, 3 );
 function ccp_plugin_add_fields_header() {
 	?>
 	<tr class="form-field">
-		<th scope="row" valign="top"><h3><?php _e( 'Custom Category Pages', 'ccp_plugin' ); ?></h3></th>
+		<th scope="row" valign="top"><h3 id="custom-category-pages"><?php _e( 'Custom Category Pages', 'ccp_plugin' ); ?></h3></th>
 	</tr>
 	<?php
 }
@@ -185,6 +185,17 @@ function ccp_plugin_enqueue_scripts() {
 
 add_action( 'wp_enqueue_scripts', 'ccp_plugin_enqueue_scripts' );
 
+function ccp_plugin_admin_enqueue_scripts() {
+	if ( is_admin() && 'ccp_plugin' == $_REQUEST['page'] ) {
+		wp_enqueue_style(
+			'ccp_plugin_admin',
+			plugins_url( 'stylesheets/admin.css', __FILE__ )
+		);
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'ccp_plugin_admin_enqueue_scripts' );
+
 function ccp_register_menu_pages() {
 	$title = __( 'WP Custom Category Pages', 'ccp_plugin' );
 	add_menu_page( $title, $title, 'manage_categories', 'ccp_plugin', 'ccp_plugin_settings_page' );
@@ -205,6 +216,20 @@ function ccp_plugin_settings_page() {
 		</div>
 		<div id="ccp_plugin-admin-category-list-container">
 			<h3><?php _e( 'Categories', 'ccp_plugin' ); ?></h3>
+			<?php $categories = get_categories( array( 'hide_empty' => false ) ); ?>
+			<?php foreach ( $categories as $category ) : ?>
+				<div class="ccp_plugin-admin-single-category clearfix">
+					<h4><?php echo esc_html( $category->name ); ?> <a href="<?php echo esc_url( admin_url( 'edit-tags.php?action=edit&taxonomy=category&tag_ID=' . intval( $category->term_id ) ) ); ?>#custom-category-pages"><?php _e( 'edit this category', 'ccp_plugin' ); ?></a></h4>
+					<div class="ccp_plugin-admin-category-details-container">
+						<span class="ccp_plugin-admin-category-details-label"><?php _e( "Title tag:", 'ccp_plugin' ); ?></span>
+						<span class="ccp_plugin-admin-category-details-value"><?php echo esc_html( get_tax_meta_strip( $category->term_id, 'page_title' ) ); ?></span>
+						<span class="ccp_plugin-admin-category-details-label"><?php _e( "Heading:", 'ccp_plugin' ); ?></span>
+						<span class="ccp_plugin-admin-category-details-value"><?php echo esc_html( get_tax_meta_strip( $category->term_id, 'heading' ) ); ?></span>
+						<span class="ccp_plugin-admin-category-details-label"><?php _e( "Description:", 'ccp_plugin' ); ?></span>
+						<span class="ccp_plugin-admin-category-details-value"><?php echo strip_tags( get_tax_meta_strip( $category->term_id, 'copy' ) ); ?></span>
+					</div>
+				</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 	<?php

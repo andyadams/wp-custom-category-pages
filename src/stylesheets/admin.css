@@ -1,0 +1,25 @@
+.ccp_plugin-admin-category-details-label {
+	display: block;
+	float: left;
+	width: 75px;
+	font-weight: bold;
+	clear: both;
+}
+.ccp_plugin-admin-category-details-value {
+	display: block;
+	float: left;
+	width: 600px;
+}
+.ccp_plugin-admin-single-category {
+	clear: both;
+	margin-bottom: 10px;
+	zoom:1;
+}
+.ccp_plugin-admin-single-category:before,
+.ccp_plugin-admin-single-category:after {
+	content:"";
+	display:table;
+}
+.ccp_plugin-admin-single-category:after {
+	clear:both;
+}
