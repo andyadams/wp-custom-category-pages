@@ -41,6 +41,17 @@ function ccp_plugin_admin_init() {
 
 		$my_meta =  new Tax_Meta_Class( $config );
 
+	    $my_meta->addSelect(
+			'custom_content_enabled',
+			array(
+				'yes' => __( 'Yes', 'ccp_plugin' ),
+				'no'=> __( 'No', 'ccp_plugin' )
+			),
+			array(
+				'name' => __( 'Use Custom Category Pages content for this category?', 'ccp_plugin' ),
+				'std' => array( 'yes' )
+			)
+		);
 		$my_meta->addText( 'headline', array( 'name' => __( 'Category Headline', 'ccp_plugin' ) ) );
 		$my_meta->addText( 'page_title', array( 'name' => __( 'Category Page Title', 'ccp_plugin' ) ) );
 		$my_meta->addWysiwyg( 'copy', array( 'name' => __( 'Category Copy', 'ccp_plugin' ) ) );
