@@ -71,3 +71,16 @@ function ccp_plugin_add_fields_header() {
 }
 
 add_action( 'category_edit_form_fields', 'ccp_plugin_add_fields_header' );
+
+function ccp_plugin_wp_title( $title ) {
+	if ( is_category() ) {
+		$new_title = get_tax_meta( get_queried_object_id(), 'page_title' );
+		if ( ! empty( $new_title ) ) {
+			$title = $new_title;
+		}
+	}
+
+	return $title;
+}
+
+add_filter( 'wp_title', 'ccp_plugin_wp_title', 20 );
