@@ -1,0 +1,11 @@
+#ccp_plugin-main-container .ccp_plugin-category-title {
+	font-size: 30px;
+	margin-bottom: 10px;
+}
+#ccp_plugin-category-description {
+	margin-bottom: 10px;
+}
+#ccp_plugin-loop .ccp_plugin-post-title {
+	font-size: 24px;
+	margin-bottom: 10px;
+}

@@ -1,12 +1,12 @@
 <?php get_header(); ?>
 <div id="ccp_plugin-main-container" <?php ccp_plugin_main_container_class(); ?>>
-	<h1><?php single_cat_title(); ?></h1>
+	<h1 class="ccp_plugin-category-title"><?php single_cat_title(); ?></h1>
 	<div id="ccp_plugin-category-description">
 		<?php echo category_description(); ?>
 	</div>
 	<div id="ccp_plugin-loop">
 		<?php while ( have_posts() ) : the_post(); ?>
-			<h2><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+			<h2 class="ccp_plugin-post-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 		<?php endwhile; ?>
 	</div>
 	<div id="ccp_plugin-pagination">

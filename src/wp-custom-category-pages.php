@@ -62,6 +62,19 @@ function ccp_plugin_admin_init() {
 
 add_action( 'init', 'ccp_plugin_admin_init' );
 
+/**
+ * Filters the plugin URL in case a bad URL is given due to symlinking
+ */
+function ccp_plugin_filter_plugins_url( $url, $path, $plugin ) {
+	$real_path = realpath( dirname( __FILE__ ) );
+
+	$url = str_replace( $real_path, '/wp-custom-category-pages', $url );
+
+	return $url;
+}
+
+add_filter( 'plugins_url', 'ccp_plugin_filter_plugins_url', 10, 3 );
+
 function ccp_plugin_add_fields_header() {
 	?>
 	<tr class="form-field">
@@ -160,3 +173,14 @@ function ccp_modify_post_count( &$query ) {
 }
 
 add_action( 'pre_get_posts', 'ccp_modify_post_count' );
+
+function ccp_plugin_enqueue_scripts() {
+	if ( is_category() && ccp_plugin_is_custom_content_enabled() ) {
+		wp_enqueue_style(
+			'ccp_plugin_category_archive',
+			plugins_url( 'stylesheets/category.css', __FILE__ )
+		);
+	}
+}
+
+add_action( 'wp_enqueue_scripts', 'ccp_plugin_enqueue_scripts' );
