@@ -85,6 +85,19 @@ function ccp_plugin_wp_title( $title ) {
 
 add_filter( 'wp_title', 'ccp_plugin_wp_title', 20 );
 
+function ccp_plugin_single_cat_title( $title ) {
+	if ( is_category() && ccp_plugin_is_custom_content_enabled() ) {
+		$new_title = get_tax_meta( get_queried_object_id(), 'heading' );
+		if ( ! empty( $new_title ) ) {
+			$title = $new_title;
+		}
+	}
+
+	return $title;
+}
+
+add_filter( 'single_cat_title', 'ccp_plugin_single_cat_title' );
+
 function ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 	if ( NULL === $category_id ) {
 		$category_id = get_queried_object_id();

@@ -1,6 +1,6 @@
 <?php get_header(); ?>
 <div id="ccp_plugin-main-container">
-	Here is where the content will go
+	<h1><?php single_cat_title(); ?></h1>
 </div>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
