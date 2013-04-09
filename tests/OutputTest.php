@@ -40,4 +40,24 @@ class OutputTest extends WP_UnitTestCase {
 
 		$this->assertEquals( $original_heading, $heading );
 	}
+
+	public function testDescriptionIsOverwrittenOnCategoryPages() {
+		$category = wp_insert_term( 'Category One', 'category', array( 'description' => 'Original description!' ) );
+
+		$this->go_to( get_term_link( $category['term_id'], 'category' ) );
+
+		$original_copy = category_description();
+
+		update_tax_meta( $category['term_id'], 'copy', '<p>Overwritten copy!</p>' );
+
+		$copy = category_description();
+
+		$this->assertEquals( '<p>Overwritten copy!</p>', $copy );
+
+		update_tax_meta( $category['term_id'], 'custom_content_enabled', 0 );
+
+		$copy = category_description();
+
+		$this->assertEquals( $original_copy, $copy );
+	}
 }
