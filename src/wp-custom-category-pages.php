@@ -184,3 +184,28 @@ function ccp_plugin_enqueue_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'ccp_plugin_enqueue_scripts' );
+
+function ccp_register_menu_pages() {
+	$title = __( 'WP Custom Category Pages', 'ccp_plugin' );
+	add_menu_page( $title, $title, 'manage_categories', 'ccp_plugin', 'ccp_plugin_settings_page' );
+}
+
+add_action( 'admin_menu', 'ccp_register_menu_pages' );
+
+function ccp_plugin_settings_page() {
+	?>
+	<div class="wrap">
+		<div id="icon-options-general" class="icon32"><br></div>
+		<h2><?php _e( 'WP Custom Category Pages', 'ccp_plugin' ); ?></h2>
+		<p><?php echo sprintf( __( 'By: %s', 'ccp_plugin' ), '<a href="#">Author here</a>' ); ?></p>
+		<div id="ccp_plugin-admin-description">
+			<p>
+				<?php _e( 'This plugin allows you to add custom copy and headlines to the top of your category pages.', 'ccp_plugin' ); ?>
+			</p>
+		</div>
+		<div id="ccp_plugin-admin-category-list-container">
+			<h3><?php _e( 'Categories', 'ccp_plugin' ); ?></h3>
+		</div>
+	</div>
+	<?php
+}
