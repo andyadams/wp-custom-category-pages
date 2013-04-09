@@ -44,12 +44,12 @@ function ccp_plugin_admin_init() {
 	    $my_meta->addSelect(
 			'custom_content_enabled',
 			array(
-				'yes' => __( 'Yes', 'ccp_plugin' ),
-				'no'=> __( 'No', 'ccp_plugin' )
+				'1' => __( 'Yes', 'ccp_plugin' ),
+				'0'=> __( 'No', 'ccp_plugin' )
 			),
 			array(
 				'name' => __( 'Use Custom Category Pages content for this category?', 'ccp_plugin' ),
-				'std' => array( 'yes' )
+				'std' => array( '1' )
 			)
 		);
 		$my_meta->addText( 'headline', array( 'name' => __( 'Category Headline', 'ccp_plugin' ) ) );
@@ -74,9 +74,13 @@ add_action( 'category_edit_form_fields', 'ccp_plugin_add_fields_header' );
 
 function ccp_plugin_wp_title( $title ) {
 	if ( is_category() ) {
-		$new_title = get_tax_meta( get_queried_object_id(), 'page_title' );
-		if ( ! empty( $new_title ) ) {
-			$title = $new_title;
+		$category_id = get_queried_object_id();
+
+		if ( ccp_plugin_is_custom_content_enabled( $category_id ) ) {
+			$new_title = get_tax_meta( $category_id, 'page_title' );
+			if ( ! empty( $new_title ) ) {
+				$title = $new_title;
+			}
 		}
 	}
 
@@ -84,3 +88,7 @@ function ccp_plugin_wp_title( $title ) {
 }
 
 add_filter( 'wp_title', 'ccp_plugin_wp_title', 20 );
+
+function ccp_plugin_is_custom_content_enabled( $category_id ) {
+	return (boolean) get_tax_meta( $category_id, 'custom_content_enabled' );
+}
