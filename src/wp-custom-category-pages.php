@@ -90,11 +90,13 @@ function ccp_plugin_main_container_class( $classes = array() ) {
 		$classes = array( $classes );
 	}
 
+	/*
 	$current_theme = wp_get_theme();
 
 	if ( 'twentytwelve' == $current_theme->get_template() ) {
 		$classes[] = 'site-content';
 	}
+	*/
 
 	apply_filters( 'ccp_plugin_main_container_classes', $classes );
 

@@ -14,5 +14,4 @@
 		<div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'ccp_plugin' ) ); ?></div>
 	</div>
 </div>
-<?php get_sidebar(); ?>
 <?php get_footer(); ?>
