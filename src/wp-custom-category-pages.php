@@ -49,7 +49,7 @@ function ccp_plugin_admin_init() {
 			),
 			array(
 				'name' => __( 'Use Custom Category Pages content for this category?', 'ccp_plugin' ),
-				'std' => array( '1' )
+				'std' => array( '0' )
 			)
 		);
 		$my_meta->addText( 'heading', array( 'name' => __( 'Category Headline', 'ccp_plugin' ) ) );
@@ -78,7 +78,7 @@ add_filter( 'plugins_url', 'ccp_plugin_filter_plugins_url', 10, 3 );
 function ccp_plugin_add_fields_header() {
 	?>
 	<tr class="form-field">
-		<th scope="row" valign="top"><h3 id="custom-category-pages"><?php _e( 'Custom Category Pages', 'ccp_plugin' ); ?></h3></th>
+		<th scope="row" valign="top" colspan="2"><h2 id="custom-category-pages"><?php _e( 'WP Custom Category Pages', 'ccp_plugin' ); ?></h2></th>
 	</tr>
 	<?php
 }
