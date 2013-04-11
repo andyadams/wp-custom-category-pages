@@ -188,7 +188,9 @@ function ccp_plugin_enqueue_scripts() {
 add_action( 'wp_enqueue_scripts', 'ccp_plugin_enqueue_scripts' );
 
 function ccp_plugin_admin_enqueue_scripts() {
-	if ( is_admin() && 'ccp_plugin' == $_REQUEST['page'] ) {
+	global $pagenow;
+
+	if ( 'ccp_plugin' == $_REQUEST['page'] || ( 'edit-tags.php' == $pagenow && isset( $_REQUEST['taxonomy'] ) && 'category' == $_REQUEST['taxonomy'] ) ) {
 		wp_enqueue_style(
 			'ccp_plugin_admin',
 			plugins_url( 'stylesheets/admin.css', __FILE__ )

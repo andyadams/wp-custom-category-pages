@@ -23,3 +23,7 @@
 .ccp_plugin-admin-single-category:after {
 	clear:both;
 }
+
+#wp-copy-wrap {
+	width: 775px;
+}
