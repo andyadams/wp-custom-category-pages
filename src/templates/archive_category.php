@@ -2,7 +2,7 @@
 <div id="ccp_plugin-main-container" <?php ccp_plugin_main_container_class(); ?>>
 	<h1 class="ccp_plugin-category-title"><?php single_cat_title(); ?></h1>
 	<div id="ccp_plugin-category-description">
-		<?php echo category_description(); ?>
+		<?php echo apply_filters( 'the_content', category_description() ); ?>
 	</div>
 	<div id="ccp_plugin-loop">
 		<?php while ( have_posts() ) : the_post(); ?>
