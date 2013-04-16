@@ -9,7 +9,7 @@ Author URI: http://geoffkenyon.com
 License: GPL2
 */
 
-/*  Copyright YEAR  PLUGIN_AUTHOR_NAME  (email : PLUGIN AUTHOR EMAIL)
+/*  Copyright 2013  Geoff Kenyon  (email : )
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
