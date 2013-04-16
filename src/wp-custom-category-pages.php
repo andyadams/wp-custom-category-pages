@@ -193,7 +193,7 @@ add_action( 'wp_enqueue_scripts', 'wp_ccp_plugin_enqueue_scripts' );
 function wp_ccp_plugin_admin_enqueue_scripts() {
 	global $pagenow;
 
-	if ( 'wp_ccp_plugin' == $_REQUEST['page'] || ( 'edit-tags.php' == $pagenow && isset( $_REQUEST['taxonomy'] ) && 'category' == $_REQUEST['taxonomy'] ) ) {
+	if ( ( isset( $_REQUEST['page'] ) && 'wp_ccp_plugin' == $_REQUEST['page'] ) || ( 'edit-tags.php' == $pagenow && isset( $_REQUEST['taxonomy'] ) && 'category' == $_REQUEST['taxonomy'] ) ) {
 		wp_enqueue_style(
 			'wp_ccp_plugin_admin',
 			plugins_url( 'stylesheets/admin.css', __FILE__ )
