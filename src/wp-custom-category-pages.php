@@ -9,7 +9,7 @@ Author URI: http://geoffkenyon.com
 License: GPL2
 */
 
-/*  Copyright 2013  Geoff Kenyon  (email : )
+/*  Copyright 2013  Geoff Kenyon  (email: geoff@geoffkenyon.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as
