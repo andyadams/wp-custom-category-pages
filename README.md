@@ -1,2 +1,0 @@
-wp-custom-category-pages
-========================
