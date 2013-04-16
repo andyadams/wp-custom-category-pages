@@ -1,4 +1,4 @@
-.ccp_plugin-admin-category-details-label {
+.wp_ccp_plugin-admin-category-details-label {
 	display: block;
 	float: left;
 	width: 100px;
@@ -7,22 +7,22 @@
 	text-align: right;
 	margin-right: 8px;
 }
-.ccp_plugin-admin-category-details-value {
+.wp_ccp_plugin-admin-category-details-value {
 	display: block;
 	float: left;
 	width: 600px;
 }
-.ccp_plugin-admin-single-category {
+.wp_ccp_plugin-admin-single-category {
 	clear: both;
 	margin-bottom: 10px;
 	zoom:1;
 }
-.ccp_plugin-admin-single-category:before,
-.ccp_plugin-admin-single-category:after {
+.wp_ccp_plugin-admin-single-category:before,
+.wp_ccp_plugin-admin-single-category:after {
 	content:"";
 	display:table;
 }
-.ccp_plugin-admin-single-category:after {
+.wp_ccp_plugin-admin-single-category:after {
 	clear:both;
 }
 
