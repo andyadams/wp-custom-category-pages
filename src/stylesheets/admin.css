@@ -1,9 +1,11 @@
 .ccp_plugin-admin-category-details-label {
 	display: block;
 	float: left;
-	width: 75px;
+	width: 100px;
 	font-weight: bold;
 	clear: both;
+	text-align: right;
+	margin-right: 8px;
 }
 .ccp_plugin-admin-category-details-value {
 	display: block;
