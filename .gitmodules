@@ -1,6 +1,0 @@
-[submodule "vendor/wordpress-tests"]
-	path = vendor/wordpress-tests
-	url = git://github.com/nb/wordpress-tests.git
-[submodule "src/vendor/Tax-Meta-Class"]
-	path = src/vendor/Tax-Meta-Class
-	url = git://github.com/bainternet/Tax-Meta-Class.git
