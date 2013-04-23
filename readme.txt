@@ -6,7 +6,7 @@ Tested up to: 3.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create custom category pages: Add content to category pages and specify a headline and page title to improve the UX and Search Engine Optimization (SEO) of Category Pages.
+Create custom category pages: Add content to category pages and specify a headline and page title to improve the UX and SEO of Category Pages.
 
 == Description ==
 
@@ -18,13 +18,13 @@ Additionally, WP Custom Category Pages rids your site of the duplicate content t
 
 Plugin by [Geoff Kenyon](http://geoffkenyon.com/home) | Please give feedback [here](http://geoffkenyon.com/wp-custom-category-pages-feedback/).
 
-
 Feature Overview:
-- Easily add content to category pages
-- Create unique headlines for category pages
-- Removes standard “archives for…” verbiage
-- Removes duplicate content from category pages
-- Displays 25 posts per page
+
+* Easily add content to category pages
+* Create unique headlines for category pages
+* Removes standard “archives for…” verbiage
+* Removes duplicate content from category pages
+* Displays 25 posts per page
 
 Important Notes:
 The page title function only works with themes that use wp_title correctly. Additional work may be necessary to make this plugin compatible with some themes.
@@ -33,3 +33,7 @@ The page title function only works with themes that use wp_title correctly. Addi
 
 1. Download the .zip file using the link on this page.
 2. Install the .zip by going to Plugins -> Add New -> Upload on your admin dashboard.
+
+== Screenshots ==
+
+1. Settings Page
