@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Category Pages
 Plugin URI: http://geoffkenyon.com/wp-custom-category-pages
 Description: WP Custom Category Pages lets you turn your category pages into useful landing pages that are good for SEO by adding custom content. Transform your category pages from thin pages full of duplicate content to user focused and SEO friendly landing pages.
-Version: 1.1.0
+Version: 1.1.1
 Author: Geoff Kenyon
 Author URI: http://geoffkenyon.com
 License: GPL2
