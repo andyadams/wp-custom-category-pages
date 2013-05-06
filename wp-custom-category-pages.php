@@ -255,6 +255,7 @@ function wp_ccp_plugin_settings_page() {
 		</div>
 	</div>
 	<?php
+}
 
 function wp_cco_plugin_settings_api_init() {
 	register_setting( 'wp_ccp_plugin_options', 'wp_ccp_plugin_options', 'wp_ccp_plugin_options_validate' );
