@@ -29,3 +29,22 @@
 #wp-copy-wrap {
 	width: 775px;
 }
+
+#wp_ccp_plugin-settings {
+	background: #efefef;
+	padding: 5px 15px 15px 15px;
+}
+
+#wp_ccp_plugin-settings h3 {
+	font-size: 1em;
+	margin: 0.5em 0;
+}
+
+#wp_ccp_plugin-settings .form-table {
+	margin-bottom: 0;
+}
+
+#wp_ccp_plugin-settings .form-table th {
+	padding-left: 0;
+	padding-right: 0;
+}

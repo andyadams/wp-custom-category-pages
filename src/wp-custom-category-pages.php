@@ -216,6 +216,18 @@ function wp_ccp_plugin_settings_page() {
 		<div id="icon-options-general" class="icon32"><br></div>
 		<h2><?php _e( 'WP Custom Category Pages', 'wp_ccp_plugin' ); ?></h2>
 		<p><?php echo sprintf( __( 'Plugin by: %s', 'wp_ccp_plugin' ), '<a href="http://geoffkenyon.com">Geoff Kenyon</a>' ); ?></p>
+		<?php if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) : ?>
+			<div class="updated">
+				<p><strong><?php _e( 'Settings updated.', 'iproperty' ); ?></strong></p>
+			</div>
+		<?php endif; ?>
+		<div id="wp_ccp_plugin-settings">
+			<form method="post" action="options.php">
+				<?php settings_fields( 'wp_ccp_plugin_options' ); ?>
+				<?php do_settings_sections( 'wp_ccp_plugin' ); ?>
+				<input name="Save" type="submit" value="<?php esc_attr_e( 'Save settings', 'wp_ccp_plugin' ); ?>" />
+			</form>
+		</div>
 		<div id="wp_ccp_plugin-admin-description">
 			<p>
 				<?php _e( 'To get started creating awesome category pages, simply click edit for the category that you would like to modify. There you can enter a custom headline and page title along with custom content by using the WordPress editor.', 'wp_ccp_plugin' ); ?>
@@ -243,4 +255,44 @@ function wp_ccp_plugin_settings_page() {
 		</div>
 	</div>
 	<?php
+}
+
+function wp_cco_plugin_settings_api_init() {
+	register_setting( 'wp_ccp_plugin_options', 'wp_ccp_plugin_options', 'wp_ccp_plugin_options_validate' );
+	add_settings_section( 'wp_ccp_plugin_general', __( 'Settings', 'wp_ccp_plugin' ), 'wp_ccp_plugin_general_settings_text', 'wp_ccp_plugin' );
+	add_settings_field( 'enable_sidebar', __( 'Enable Sidebar on Category Pages', 'wp_ccp_plugin' ), 'wp_ccp_plugin_enable_sidebar_input', 'wp_ccp_plugin', 'wp_ccp_plugin_general' );
+}
+
+add_action( 'admin_init', 'wp_cco_plugin_settings_api_init' );
+
+function wp_ccp_plugin_general_settings_text() {
+	?>
+	<p><small><em>
+		<?php _e( 'Note: Sidebar display is controlled by the theme; Your sidebar may not look quite right if enabled.', 'wp_ccp_plugin' ); ?><br>
+		<?php _e( 'If this is the case with your theme, you will need to fix the sidebar with CSS or disable the sidebar.', 'wp_ccp_plugin' ); ?><br>
+		<?php echo sprintf( __( 'If you have any questions, feel free to post them in the %s', 'wp_ccp_plugin' ), '<a href="http://wordpress.org/support/plugin/wp-custom-category-pages">' . __( 'support forums', 'wp_ccp_plugin' ) . '</a>' ); ?>.
+	</em></small></p>
+	<?php
+}
+
+function wp_ccp_plugin_enable_sidebar_input() {
+	$options = get_option( 'wp_ccp_plugin_options' );
+
+	$enable_sidebar = isset( $options['enable_sidebar'] ) && $options['enable_sidebar'];
+	?>
+	<select name="wp_ccp_plugin_options[enable_sidebar]">
+		<option value="1" <?php selected( $enable_sidebar ); ?>>Yes</option>
+		<option value="0" <?php selected( ! $enable_sidebar ); ?>>No</option>
+	</select>
+	<?php
+}
+
+function wp_ccp_plugin_options_validate( $input ) {
+	if ( isset( $input['enable_sidebar'] ) && $input['enable_sidebar'] ) {
+		$new_input['enable_sidebar'] = 1;
+	} else {
+		$new_input['enable_sidebar'] = 0;
+	}
+
+	return $new_input;
 }
