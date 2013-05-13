@@ -25,6 +25,7 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+require_once( dirname( __FILE__ ) . '/template_handling.php' );
 require_once( dirname( __FILE__ ) . '/vendor/Tax-Meta-Class/Tax-meta-class/Tax-meta-class.php' );
 
 function wp_ccp_plugin_admin_init() {
@@ -162,22 +163,13 @@ function wp_ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 	return (boolean) $is_enabled;
 }
 
-function wp_ccp_plugin_template_redirect() {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
-		include( dirname( __FILE__ ) . '/templates/archive_category.php' );
-		exit;
-	}
-}
-
-add_action( 'template_redirect', 'wp_ccp_plugin_template_redirect' );
-
-function ccp_modify_post_count( &$query ) {
+function wp_ccp_modify_post_count( &$query ) {
 	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
 		$query->set( 'posts_per_page', 25 );
 	}
 }
 
-add_action( 'pre_get_posts', 'ccp_modify_post_count' );
+add_action( 'pre_get_posts', 'wp_ccp_modify_post_count' );
 
 function wp_ccp_plugin_enqueue_scripts() {
 	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
@@ -203,12 +195,12 @@ function wp_ccp_plugin_admin_enqueue_scripts() {
 
 add_action( 'admin_enqueue_scripts', 'wp_ccp_plugin_admin_enqueue_scripts' );
 
-function ccp_register_menu_pages() {
+function wp_ccp_register_menu_pages() {
 	$title = __( 'WP Custom Category Pages', 'wp_ccp_plugin' );
 	add_menu_page( $title, $title, 'manage_categories', 'wp_ccp_plugin', 'wp_ccp_plugin_settings_page' );
 }
 
-add_action( 'admin_menu', 'ccp_register_menu_pages' );
+add_action( 'admin_menu', 'wp_ccp_register_menu_pages' );
 
 function wp_ccp_plugin_settings_page() {
 	?>
@@ -257,13 +249,13 @@ function wp_ccp_plugin_settings_page() {
 	<?php
 }
 
-function wp_cco_plugin_settings_api_init() {
+function wp_ccp_plugin_settings_api_init() {
 	register_setting( 'wp_ccp_plugin_options', 'wp_ccp_plugin_options', 'wp_ccp_plugin_options_validate' );
 	add_settings_section( 'wp_ccp_plugin_general', __( 'Settings', 'wp_ccp_plugin' ), 'wp_ccp_plugin_general_settings_text', 'wp_ccp_plugin' );
 	add_settings_field( 'enable_sidebar', __( 'Enable Sidebar on Category Pages', 'wp_ccp_plugin' ), 'wp_ccp_plugin_enable_sidebar_input', 'wp_ccp_plugin', 'wp_ccp_plugin_general' );
 }
 
-add_action( 'admin_init', 'wp_cco_plugin_settings_api_init' );
+add_action( 'admin_init', 'wp_ccp_plugin_settings_api_init' );
 
 function wp_ccp_plugin_general_settings_text() {
 	?>
