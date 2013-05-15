@@ -26,6 +26,7 @@ License: GPL2
 */
 
 require_once( dirname( __FILE__ ) . '/template_handling.php' );
+require_once( dirname( __FILE__ ) . '/theme_support.php' );
 require_once( dirname( __FILE__ ) . '/vendor/Tax-Meta-Class/Tax-meta-class/Tax-meta-class.php' );
 
 function wp_ccp_plugin_admin_init() {

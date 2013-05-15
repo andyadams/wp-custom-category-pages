@@ -57,6 +57,11 @@ function wp_ccp_plugin_fix_fake_content( $content ) {
 
 		// Force an end to the loop
 		$wp_query->current_post = ( $wp_query->post_count - 1 );
+
+		$before_content = apply_filters( 'wp_ccp_plugin_before_content', '' );
+		$after_content = apply_filters( 'wp_ccp_plugin_after_content', '' );
+
+		$content = $before_content . $content . $after_content;
 	}
 
 	return $content;
