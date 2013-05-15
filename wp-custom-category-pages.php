@@ -3,7 +3,7 @@
 Plugin Name: WP Custom Category Pages
 Plugin URI: http://geoffkenyon.com/wp-custom-category-pages
 Description: WP Custom Category Pages lets you turn your category pages into useful landing pages that are good for SEO by adding custom content. Transform your category pages from thin pages full of duplicate content to user focused and SEO friendly landing pages.
-Version: 1.1.1
+Version: 1.2.0
 Author: Geoff Kenyon
 Author URI: http://geoffkenyon.com
 License: GPL2
@@ -25,6 +25,8 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+require_once( dirname( __FILE__ ) . '/template_handling.php' );
+require_once( dirname( __FILE__ ) . '/theme_support.php' );
 require_once( dirname( __FILE__ ) . '/vendor/Tax-Meta-Class/Tax-meta-class/Tax-meta-class.php' );
 
 function wp_ccp_plugin_admin_init() {
@@ -93,14 +95,6 @@ function wp_ccp_plugin_main_container_class( $classes = array() ) {
 		$classes = array( $classes );
 	}
 
-	/*
-	$current_theme = wp_get_theme();
-
-	if ( 'twentytwelve' == $current_theme->get_template() ) {
-		$classes[] = 'site-content';
-	}
-	*/
-
 	apply_filters( 'wp_ccp_plugin_main_container_classes', $classes );
 
 	if ( ! empty( $classes ) ) {
@@ -162,22 +156,13 @@ function wp_ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 	return (boolean) $is_enabled;
 }
 
-function wp_ccp_plugin_template_redirect() {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
-		include( dirname( __FILE__ ) . '/templates/archive_category.php' );
-		exit;
-	}
-}
-
-add_action( 'template_redirect', 'wp_ccp_plugin_template_redirect' );
-
-function ccp_modify_post_count( &$query ) {
+function wp_ccp_modify_post_count( &$query ) {
 	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
 		$query->set( 'posts_per_page', 25 );
 	}
 }
 
-add_action( 'pre_get_posts', 'ccp_modify_post_count' );
+add_action( 'pre_get_posts', 'wp_ccp_modify_post_count' );
 
 function wp_ccp_plugin_enqueue_scripts() {
 	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
@@ -203,12 +188,12 @@ function wp_ccp_plugin_admin_enqueue_scripts() {
 
 add_action( 'admin_enqueue_scripts', 'wp_ccp_plugin_admin_enqueue_scripts' );
 
-function ccp_register_menu_pages() {
+function wp_ccp_register_menu_pages() {
 	$title = __( 'WP Custom Category Pages', 'wp_ccp_plugin' );
 	add_menu_page( $title, $title, 'manage_categories', 'wp_ccp_plugin', 'wp_ccp_plugin_settings_page' );
 }
 
-add_action( 'admin_menu', 'ccp_register_menu_pages' );
+add_action( 'admin_menu', 'wp_ccp_register_menu_pages' );
 
 function wp_ccp_plugin_settings_page() {
 	?>
@@ -257,42 +242,64 @@ function wp_ccp_plugin_settings_page() {
 	<?php
 }
 
-function wp_cco_plugin_settings_api_init() {
+function wp_ccp_plugin_settings_api_init() {
 	register_setting( 'wp_ccp_plugin_options', 'wp_ccp_plugin_options', 'wp_ccp_plugin_options_validate' );
 	add_settings_section( 'wp_ccp_plugin_general', __( 'Settings', 'wp_ccp_plugin' ), 'wp_ccp_plugin_general_settings_text', 'wp_ccp_plugin' );
-	add_settings_field( 'enable_sidebar', __( 'Enable Sidebar on Category Pages', 'wp_ccp_plugin' ), 'wp_ccp_plugin_enable_sidebar_input', 'wp_ccp_plugin', 'wp_ccp_plugin_general' );
+	add_settings_field( 'page_template', __( 'Page template for category pages', 'wp_ccp_plugin' ), 'wp_ccp_plugin_page_template_input', 'wp_ccp_plugin', 'wp_ccp_plugin_general' );
 }
 
-add_action( 'admin_init', 'wp_cco_plugin_settings_api_init' );
+add_action( 'admin_init', 'wp_ccp_plugin_settings_api_init' );
 
 function wp_ccp_plugin_general_settings_text() {
 	?>
 	<p><small><em>
-		<?php _e( 'Note: Sidebar display is controlled by the theme; Your sidebar may not look quite right if enabled.', 'wp_ccp_plugin' ); ?><br>
-		<?php _e( 'If this is the case with your theme, you will need to fix the sidebar with CSS or disable the sidebar.', 'wp_ccp_plugin' ); ?><br>
-		<?php echo sprintf( __( 'If you have any questions, feel free to post them in the %s', 'wp_ccp_plugin' ), '<a href="http://wordpress.org/support/plugin/wp-custom-category-pages">' . __( 'support forums', 'wp_ccp_plugin' ) . '</a>' ); ?>.
+		<?php _e( 'Note: Category page display is ultimately controlled by the theme.', 'wp_ccp_plugin' ) ?><br>
+		<?php _e( 'Below, you can select which page template you want your category pages to use.', 'wp_ccp_plugin' ); ?><br>
+		<?php _e( 'There are known issues with sidebars on some themes, which will be addressed in future updates.', 'wp_ccp_plugin' ); ?><br>
+		<?php echo sprintf( __( 'If you have any questions or difficulties, feel free to post them in the %s', 'wp_ccp_plugin' ), '<a href="http://wordpress.org/support/plugin/wp-custom-category-pages">' . __( 'support forums', 'wp_ccp_plugin' ) . '</a>' ); ?>.
 	</em></small></p>
 	<?php
 }
 
-function wp_ccp_plugin_enable_sidebar_input() {
-	$options = get_option( 'wp_ccp_plugin_options' );
+function wp_ccp_plugin_page_template_input() {
+	$selected_page_template = wp_ccp_plugin_selected_page_template();
 
-	$enable_sidebar = isset( $options['enable_sidebar'] ) && $options['enable_sidebar'];
+	$current_theme = wp_get_theme();
+	$page_templates = $current_theme->get_page_templates();
+
 	?>
-	<select name="wp_ccp_plugin_options[enable_sidebar]">
-		<option value="1" <?php selected( $enable_sidebar ); ?>>Yes</option>
-		<option value="0" <?php selected( ! $enable_sidebar ); ?>>No</option>
+	<select name="wp_ccp_plugin_options[page_template]">
+		<option value=""><?php _e( 'Default', 'wp_ccp_plugin' ); ?></option>
+		<?php foreach ( $page_templates as $filename => $template_name ) : ?>
+			<option value="<?php echo esc_attr( $filename ); ?>" <?php selected( $selected_page_template, $filename ); ?>>
+				<?php echo esc_html( $template_name ); ?>
+			</option>
+		<?php endforeach; ?>
 	</select>
 	<?php
 }
 
 function wp_ccp_plugin_options_validate( $input ) {
-	if ( isset( $input['enable_sidebar'] ) && $input['enable_sidebar'] ) {
-		$new_input['enable_sidebar'] = 1;
-	} else {
-		$new_input['enable_sidebar'] = 0;
+	$current_theme = wp_get_theme();
+	$page_templates = $current_theme->get_page_templates();
+
+	$available_templates = array_keys( $page_templates );
+
+	$selected_template = $input['page_template'];
+
+	if ( ! in_array( $selected_template, $available_templates ) ) {
+		$selected_template = '';
 	}
 
+	$new_input['page_template'] = $selected_template;
+
 	return $new_input;
+}
+
+function wp_ccp_plugin_selected_page_template() {
+	$options = get_option( 'wp_ccp_plugin_options' );
+
+	$selected_page_template = isset( $options['page_template'] ) ? $options['page_template'] : '';
+
+	return $selected_page_template;
 }

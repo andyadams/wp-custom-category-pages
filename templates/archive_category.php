@@ -1,6 +1,4 @@
-<?php get_header(); ?>
 <div id="wp_ccp_plugin-main-container" <?php wp_ccp_plugin_main_container_class(); ?>>
-	<h1 class="wp_ccp_plugin-category-title"><?php single_cat_title(); ?></h1>
 	<div id="wp_ccp_plugin-category-description">
 		<?php echo apply_filters( 'the_content', category_description() ); ?>
 	</div>
@@ -14,10 +12,3 @@
 		<div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'wp_ccp_plugin' ) ); ?></div>
 	</div>
 </div>
-<?php
-	$wp_ccp_plugin_options = get_option( 'wp_ccp_plugin_options' );
-	if ( $wp_ccp_plugin_options['enable_sidebar'] ) {
-		get_sidebar();
-	}
-?>
-<?php get_footer(); ?>
