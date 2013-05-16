@@ -77,7 +77,17 @@ function wp_ccp_plugin_is_custom_category_page() {
 }
 
 function wp_ccp_plugin_get_theme_template() {
-	$page_template = get_template_directory() . '/page.php';
+	$selected_page_template = wp_ccp_plugin_selected_page_template();
+
+	if ( ! empty( $selected_page_template ) ) {
+		$page_template = get_template_directory() . '/' . $selected_page_template;
+	} else {
+		$page_template = get_template_directory() . '/page.php';
+	}
+
+	if ( ! file_exists( $page_template ) ) {
+		$page_template = get_template_directory() . '/page.php';
+	}
 
 	apply_filters( 'wp_ccp_plugin_theme_template', $page_template );
 
