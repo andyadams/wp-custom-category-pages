@@ -157,7 +157,7 @@ function wp_ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 }
 
 function wp_ccp_modify_post_count( &$query ) {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
+	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() && $query->is_main_query() ) {
 		$query->set( 'posts_per_page', 25 );
 	}
 }
