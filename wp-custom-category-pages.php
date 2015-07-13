@@ -180,11 +180,17 @@ function wp_ccp_plugin_is_custom_category_page() {
 	return is_category() && wp_ccp_plugin_is_custom_content_enabled();
 }
 
-function wp_ccp_category_content() {
-	if ( wp_ccp_plugin_is_custom_category_page() ) {
-		$html = get_tax_meta_strip( $category_id, 'copy' );
+function wp_ccp_category_content( $category_id = NULL ) {
+	if ( empty( $category_id ) ) {
+		$category_id = get_queried_object_id();
+	}
 
-		echo $html;
+	if ( wp_ccp_plugin_is_custom_category_page() ) {
+		?>
+		<div class="wp-ccp-content">
+			<?php echo get_tax_meta_strip( $category_id, 'copy' ); ?>
+		</div>
+		<?php
 	}
 }
 
