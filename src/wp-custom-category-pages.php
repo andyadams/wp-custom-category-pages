@@ -62,19 +62,6 @@ function wp_ccp_plugin_admin_init() {
 
 add_action( 'init', 'wp_ccp_plugin_admin_init' );
 
-/**
- * Filters the plugin URL in case a bad URL is given due to symlinking
- */
-function wp_ccp_plugin_filter_plugins_url( $url, $path, $plugin ) {
-	$real_path = realpath( dirname( __FILE__ ) );
-
-	$url = str_replace( $real_path, '/wp-custom-category-pages', $url );
-
-	return $url;
-}
-
-add_filter( 'plugins_url', 'wp_ccp_plugin_filter_plugins_url', 10, 3 );
-
 function wp_ccp_plugin_add_fields_header() {
 	?>
 	<tr class="form-field">
@@ -87,57 +74,6 @@ function wp_ccp_plugin_add_fields_header() {
 }
 
 add_action( 'category_edit_form_fields', 'wp_ccp_plugin_add_fields_header' );
-
-function wp_ccp_plugin_main_container_class( $classes = array() ) {
-	if ( ! is_array( $classes ) ) {
-		$classes = array( $classes );
-	}
-
-	apply_filters( 'wp_ccp_plugin_main_container_classes', $classes );
-
-	if ( ! empty( $classes ) ) {
-		echo ' class="' . implode( ' ', $classes ) . '" ';
-	}
-}
-
-function wp_ccp_plugin_wp_title( $title ) {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
-		$new_title = get_tax_meta_strip( get_queried_object_id(), 'page_title' );
-		if ( ! empty( $new_title ) ) {
-			$title = $new_title;
-		}
-	}
-
-	return $title;
-}
-
-add_filter( 'wp_title', 'wp_ccp_plugin_wp_title', 20 );
-
-function wp_ccp_plugin_single_cat_title( $title ) {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
-		$new_title = get_tax_meta_strip( get_queried_object_id(), 'heading' );
-		if ( ! empty( $new_title ) ) {
-			$title = $new_title;
-		}
-	}
-
-	return $title;
-}
-
-add_filter( 'single_cat_title', 'wp_ccp_plugin_single_cat_title', 100 );
-
-function wp_ccp_plugin_category_description( $description, $category_id ) {
-	if ( wp_ccp_plugin_is_custom_content_enabled( $category_id ) ) {
-		$new_description = get_tax_meta_strip( $category_id, 'copy' );
-		if ( ! empty( $new_description ) ) {
-			$description = $new_description;
-		}
-	}
-
-	return $description;
-}
-
-add_filter( 'category_description', 'wp_ccp_plugin_category_description', 10, 2 );
 
 function wp_ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 	if ( NULL === $category_id ) {
@@ -153,25 +89,6 @@ function wp_ccp_plugin_is_custom_content_enabled( $category_id = NULL ) {
 
 	return (boolean) $is_enabled;
 }
-
-function wp_ccp_modify_post_count( &$query ) {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() && $query->is_main_query() ) {
-		$query->set( 'posts_per_page', 25 );
-	}
-}
-
-add_action( 'pre_get_posts', 'wp_ccp_modify_post_count' );
-
-function wp_ccp_plugin_enqueue_scripts() {
-	if ( is_category() && wp_ccp_plugin_is_custom_content_enabled() ) {
-		wp_enqueue_style(
-			'wp_ccp_plugin_category_archive',
-			plugins_url( 'stylesheets/category.css', __FILE__ )
-		);
-	}
-}
-
-add_action( 'wp_enqueue_scripts', 'wp_ccp_plugin_enqueue_scripts' );
 
 function wp_ccp_plugin_admin_enqueue_scripts() {
 	global $pagenow;
@@ -259,49 +176,16 @@ function wp_ccp_plugin_general_settings_text() {
 	<?php
 }
 
-function wp_ccp_plugin_page_template_input() {
-	$selected_page_template = wp_ccp_plugin_selected_page_template();
-
-	$current_theme = wp_get_theme();
-	$page_templates = $current_theme->get_page_templates();
-
-	?>
-	<select name="wp_ccp_plugin_options[page_template]">
-		<option value=""><?php _e( 'Default', 'wp_ccp_plugin' ); ?></option>
-		<?php foreach ( $page_templates as $filename => $template_name ) : ?>
-			<option value="<?php echo esc_attr( $filename ); ?>" <?php selected( $selected_page_template, $filename ); ?>>
-				<?php echo esc_html( $template_name ); ?>
-			</option>
-		<?php endforeach; ?>
-	</select>
-	<?php
-}
-
-function wp_ccp_plugin_options_validate( $input ) {
-	$current_theme = wp_get_theme();
-	$page_templates = $current_theme->get_page_templates();
-
-	$available_templates = array_keys( $page_templates );
-
-	$selected_template = $input['page_template'];
-
-	if ( ! in_array( $selected_template, $available_templates ) ) {
-		$selected_template = '';
-	}
-
-	$new_input['page_template'] = $selected_template;
-
-	return $new_input;
-}
-
-function wp_ccp_plugin_selected_page_template() {
-	$options = get_option( 'wp_ccp_plugin_options' );
-
-	$selected_page_template = isset( $options['page_template'] ) ? $options['page_template'] : '';
-
-	return $selected_page_template;
-}
-
 function wp_ccp_plugin_is_custom_category_page() {
 	return is_category() && wp_ccp_plugin_is_custom_content_enabled();
 }
+
+function wp_ccp_category_content() {
+	if ( wp_ccp_plugin_is_custom_category_page() ) {
+		$html = get_tax_meta_strip( $category_id, 'copy' );
+
+		echo $html;
+	}
+}
+
+add_action( 'wp_ccp_category_content', 'wp_ccp_category_content' );
