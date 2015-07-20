@@ -52,8 +52,7 @@ function wp_ccp_plugin_admin_init() {
 				'std' => array( '0' )
 			)
 		);
-		$my_meta->addText( 'heading', array( 'name' => __( 'Category Headline', 'wp_ccp_plugin' ) ) );
-		$my_meta->addText( 'page_title', array( 'name' => __( 'Category Page Title', 'wp_ccp_plugin' ) ) );
+
 		$my_meta->addWysiwyg( 'copy', array( 'name' => __( 'Category Copy', 'wp_ccp_plugin' ) ) );
 
 		$my_meta->Finish();
@@ -121,13 +120,6 @@ function wp_ccp_plugin_settings_page() {
 				<p><strong><?php _e( 'Settings updated.', 'iproperty' ); ?></strong></p>
 			</div>
 		<?php endif; ?>
-		<div id="wp_ccp_plugin-settings">
-			<form method="post" action="options.php">
-				<?php settings_fields( 'wp_ccp_plugin_options' ); ?>
-				<?php do_settings_sections( 'wp_ccp_plugin' ); ?>
-				<input name="Save" type="submit" value="<?php esc_attr_e( 'Save settings', 'wp_ccp_plugin' ); ?>" />
-			</form>
-		</div>
 		<div id="wp_ccp_plugin-admin-description">
 			<p>
 				<?php _e( 'To get started creating awesome category pages, simply click edit for the category that you would like to modify. There you can enter a custom headline and page title along with custom content by using the WordPress editor.', 'wp_ccp_plugin' ); ?>
@@ -143,11 +135,7 @@ function wp_ccp_plugin_settings_page() {
 						<span class="wp_ccp_plugin-admin-category-details-label"><?php _e( "WPCCP enabled:", 'wp_ccp_plugin' ); ?></span>
 						<?php $enabled = get_tax_meta_strip( $category->term_id, 'custom_content_enabled' ); ?>
 						<span class="wp_ccp_plugin-admin-category-details-value"><?php echo esc_html( $enabled ? __( 'Yes', 'wp_ccp_plugin' ) : __( 'No', 'wp_ccp_plugin' ) ); ?></span>
-						<span class="wp_ccp_plugin-admin-category-details-label"><?php _e( "Title tag:", 'wp_ccp_plugin' ); ?></span>
-						<span class="wp_ccp_plugin-admin-category-details-value"><?php echo esc_html( get_tax_meta_strip( $category->term_id, 'page_title' ) ); ?></span>
-						<span class="wp_ccp_plugin-admin-category-details-label"><?php _e( "Heading:", 'wp_ccp_plugin' ); ?></span>
-						<span class="wp_ccp_plugin-admin-category-details-value"><?php echo esc_html( get_tax_meta_strip( $category->term_id, 'heading' ) ); ?></span>
-						<span class="wp_ccp_plugin-admin-category-details-label"><?php _e( "Description:", 'wp_ccp_plugin' ); ?></span>
+						<span class="wp_ccp_plugin-admin-category-details-label"><?php _e( "Category Copy:", 'wp_ccp_plugin' ); ?></span>
 						<span class="wp_ccp_plugin-admin-category-details-value"><?php echo strip_tags( get_tax_meta_strip( $category->term_id, 'copy' ) ); ?></span>
 					</div>
 				</div>
@@ -156,14 +144,6 @@ function wp_ccp_plugin_settings_page() {
 	</div>
 	<?php
 }
-
-function wp_ccp_plugin_settings_api_init() {
-	register_setting( 'wp_ccp_plugin_options', 'wp_ccp_plugin_options', 'wp_ccp_plugin_options_validate' );
-	add_settings_section( 'wp_ccp_plugin_general', __( 'Settings', 'wp_ccp_plugin' ), 'wp_ccp_plugin_general_settings_text', 'wp_ccp_plugin' );
-	add_settings_field( 'page_template', __( 'Page template for category pages', 'wp_ccp_plugin' ), 'wp_ccp_plugin_page_template_input', 'wp_ccp_plugin', 'wp_ccp_plugin_general' );
-}
-
-add_action( 'admin_init', 'wp_ccp_plugin_settings_api_init' );
 
 function wp_ccp_plugin_general_settings_text() {
 	?>
