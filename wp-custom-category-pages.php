@@ -66,7 +66,7 @@ function wp_ccp_plugin_add_fields_header() {
 	<tr class="form-field">
 		<th scope="row" valign="top" colspan="2">
 			<h2 id="custom-category-pages"><?php _e( 'WP Custom Category Pages', 'wp_ccp_plugin' ); ?></h2>
-			<p><?php _e( 'Enter your custom content, headline, and page title below. Make sure that you have turned on custom content for this category to see your changes.', 'wp_ccp_plugin' ); ?></p>
+			<p><?php _e( 'Enter your custom content below. Make sure that you have turned on custom content for this category to see your changes.', 'wp_ccp_plugin' ); ?></p>
 		</th>
 	</tr>
 	<?php
@@ -142,17 +142,6 @@ function wp_ccp_plugin_settings_page() {
 			<?php endforeach; ?>
 		</div>
 	</div>
-	<?php
-}
-
-function wp_ccp_plugin_general_settings_text() {
-	?>
-	<p><small><em>
-		<?php _e( 'Note: Category page display is ultimately controlled by the theme.', 'wp_ccp_plugin' ) ?><br>
-		<?php _e( 'Below, you can select which page template you want your category pages to use.', 'wp_ccp_plugin' ); ?><br>
-		<?php _e( 'There are known issues with sidebars on some themes, which will be addressed in future updates.', 'wp_ccp_plugin' ); ?><br>
-		<?php echo sprintf( __( 'If you have any questions or difficulties, feel free to post them in the %s', 'wp_ccp_plugin' ), '<a href="http://wordpress.org/support/plugin/wp-custom-category-pages">' . __( 'support forums', 'wp_ccp_plugin' ) . '</a>' ); ?>.
-	</em></small></p>
 	<?php
 }
 
